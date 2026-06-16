@@ -15,7 +15,7 @@ difficulty = st.sidebar.selectbox(
     index=1,
 )
 attempt_limit_map = {
-    "Easy": 10,
+    "Easy": 10,  # FIX: Was 6, fewer than Normal's 8 — Steven identified the backwards ordering; AI updated Easy to 10
     "Normal": 8,
     "Hard": 5,
 }
