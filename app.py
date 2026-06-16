@@ -1,6 +1,6 @@
 import random
 import streamlit as st
-
+# FIXME: Logic breaks here
 def get_range_for_difficulty(difficulty: str):
     if difficulty == "Easy":
         return 1, 20
@@ -76,7 +76,7 @@ difficulty = st.sidebar.selectbox(
     ["Easy", "Normal", "Hard"],
     index=1,
 )
-
+# FIXME: Logic breaks here
 attempt_limit_map = {
     "Easy": 6,
     "Normal": 8,
