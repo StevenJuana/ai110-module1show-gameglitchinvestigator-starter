@@ -58,6 +58,7 @@ Sample game on **Normal** difficulty (range 1–100, 8 attempts, secret = 63):
 # pytest tests/
 # ========================= X passed in 0.XXs =========================
 ```
+============================================= 7 passed in 0.03s =============================================
 
 ## 🚀 Stretch Features
 
