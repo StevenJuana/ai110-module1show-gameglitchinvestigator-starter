@@ -25,21 +25,31 @@ It wrote the code, ran away, and now the game is unplayable.
 
 ## 📝 Document Your Experience
 
-- [ ] Describe the game's purpose.
-- [ ] Detail which bugs you found.
-- [ ] Explain what fixes you applied.
+- [x] **Game's purpose:** A number guessing game built with Streamlit where the player picks a difficulty, gets a limited number of attempts, and tries to guess a secret number using Higher/Lower hints. Score is tracked across guesses and awarded on a win.
+
+- [x] **Bugs found:**
+  - `get_range_for_difficulty` returned `(1, 50)` for Hard — a narrower range than Normal's `(1, 100)`, making Hard easier than Normal.
+  - `attempt_limit_map` gave Easy only 6 attempts versus Normal's 8 — the ordering was backwards (easier difficulty should allow more attempts).
+  - All four logic functions (`get_range_for_difficulty`, `parse_guess`, `check_guess`, `update_score`) were defined directly in `app.py` instead of `logic_utils.py`, making them untestable in isolation.
+  - Pre-existing tests in `test_game_logic.py` compared `check_guess`'s return value against a bare string, but the function returns a tuple `(outcome, message)`, so all three tests were silently broken.
+
+- [x] **Fixes applied:**
+  - Moved all four logic functions into `logic_utils.py` and updated `app.py` to import from there.
+  - Corrected the Hard difficulty range to `(1, 200)` so difficulty scales consistently across Easy → Normal → Hard.
+  - Updated Easy's attempt limit from `6` to `10` so attempts decrease as difficulty increases.
+  - Fixed existing tests to unpack the tuple: `outcome, _ = check_guess(...)`.
+  - Added pytest cases that directly target both difficulty bugs and a `conftest.py` inside `tests/` to fix module resolution when running pytest from any directory.
 
 ## 📸 Demo Walkthrough
 
-Describe your fixed game in numbered steps so a reader can follow along without watching a video:
+Sample game on **Normal** difficulty (range 1–100, 8 attempts, secret = 63):
 
-1. <!-- Describe this step -->
-2. <!-- Describe this step -->
-3. <!-- Describe this step -->
-4. <!-- Describe this step -->
-5. <!-- Add more steps as needed -->
-
-**Screenshot** *(optional)*: <!-- Insert a screenshot of your fixed, winning game here -->
+1. User selects **Normal** difficulty in the sidebar. The game displays range 1–100 and 8 attempts allowed.
+2. User enters **40** and clicks Submit → game returns **"Too Low"**. Attempt count increases to 1, score decreases by 5.
+3. User enters **70** → **"Too High"**. Score adjusts again; the narrowed range is now clear (41–69).
+4. User enters **55** → **"Too Low"**. Range narrows further to 56–69.
+5. User enters **65** → **"Too High"**. Range narrows to 56–64.
+6. User enters **63** → **"Correct!"** Balloons appear, final score is displayed, and the game locks until New Game is clicked.
 
 ## 🧪 Test Results
 
